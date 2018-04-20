@@ -1,0 +1,27 @@
+{
+  "name": "ccompiler",
+  "version": "1.0.0",
+  "description": "A validator and compiler of C language code",
+  "main": "ccompiler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evsoncustodio/ccompiler.git"
+  },
+  "keywords": [
+    "Compiler",
+    "CLang",
+    "Jison"
+  ],
+  "author": "evsoncustodio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/evsoncustodio/ccompiler/issues"
+  },
+  "homepage": "https://github.com/evsoncustodio/ccompiler#readme",
+  "dependencies": {
+    "jison": "^0.4.18"
+  }
+}

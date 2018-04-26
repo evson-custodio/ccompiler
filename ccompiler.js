@@ -23,8 +23,8 @@ let grammar = {
             [ ':', 'return "COLON";' ],
             [ '\\.', 'return "POINT";' ],
             // Circuladores
-            [ '\'', 'return "QUOTE";' ],
-            [ '\"', 'return "DOUBLE_QUOTE";' ],
+            // [ '\'', 'return "QUOTE";' ],
+            // [ '\"', 'return "DOUBLE_QUOTE";' ],
             [ '\\(', 'return "PARENTHESES_OPEN";' ],
             [ '\\)', 'return "PARENTHESES_CLOSED";' ],
             [ '\\[', 'return "BRACKETS_OPEN";' ],
@@ -72,7 +72,7 @@ let grammar = {
             [ '\\b\\d+\\b', 'return "INTEGER";' ],
             [ '\\b\\d+\\.\\d+\\b', 'return "DECIMAL";' ],
             [ '\'\\w?\'', 'return "CHARACTER";' ],
-            [ '\"\w*\"', 'return "STRING";' ],
+            [ '\"[\\s\\wáâãéêíîóôõúûüç$#%\\(\\)\\[\\]\\{\\}\\+\\-\\*\\/\\.;,<>=\]*\"', 'return "STRING";' ],
             // Identificador
             [ '\\b[a-zA-Z_]\\w*', 'return "IDENTIFIER";' ]
         ]
@@ -106,8 +106,8 @@ let grammar = {
             [ 'POINT', operation ]
         ],
         circulators: [
-            [ 'QUOTE', operation ],
-            [ 'DOUBLE_QUOTE', operation ],
+            // [ 'QUOTE', operation ],
+            // [ 'DOUBLE_QUOTE', operation ],
             [ 'PARENTHESES_OPEN', operation ],
             [ 'PARENTHESES_CLOSED', operation ],
             [ 'BRACKETS_OPEN', operation ],
@@ -170,4 +170,4 @@ let parser = Parser(grammar);
 
 let parserSource = parser.generate();
 
-parser.parse('int main() { int _4 = 4; printf("%d\n", _4); return 0; }');
+parser.parse('int main() { int _4 = 4; printf("%d%#$%éá\n()[]{}+-*/.;,<>=", _4); return 0; }');

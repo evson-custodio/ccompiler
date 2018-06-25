@@ -69,28 +69,74 @@ let grammar = {
             [ '#(include|INCLUDE)', 'return "INCLUDE";' ],
             [ '#(define|DEFINE)', 'return "DEFINE";' ],
             // Literais
-            [ '\\b\\d+\\b', 'return "INTEGER";' ],
             [ '\\b\\d+\\.\\d+\\b', 'return "DECIMAL";' ],
+            [ '\\b\\d+\\b', 'return "INTEGER";' ],
             [ '\'\\w?\'', 'return "CHARACTER";' ],
-            [ '\"[\\s\\wáâãéêíîóôõúûüç$#%\\(\\)\\[\\]\\{\\}\\+\\-\\*\\/\\.;,<>=\]*\"', 'return "STRING";' ],
+            [ '\\"[\\s\\wáâãéêíîóôõúûüç$#%\\(\\)\\[\\]\\{\\}\\+\\-\\*\\/\\.;,\\!<>=]*\\"', 'return "STRING";' ],
             // Identificador
             [ '\\b[a-zA-Z_]\\w*', 'return "IDENTIFIER";' ]
         ]
     },
     bnf: {
-        a: [
-            [ 'type a', operation ],
-            [ 'separator a', operation ],
-            [ 'circulators a', operation ],
-            [ 'quantitative a', operation ],
-            [ 'unary a', operation ],
-            [ 'binary a', operation ],
-            [ 'operator a', operation ],
-            [ 'keyword a', operation ],
-            [ 'pre_compilers a', operation ],
-            [ 'literal a', operation ],
-            [ 'identifier a', operation ],
-            [ 'EOF', operation]
+        start: [
+            [ 'syntatic EOF', 'return $1'],
+        ],
+        includeLib: [
+            [ 'INCLUDE LT identifier POINT identifier GT', 'console.log("Include Lib 1");' ]
+        ],
+        defFunction: [
+            [ 'type identifier PARENTHESES_OPEN PARENTHESES_CLOSED', 'console.log("defFunction empry");' ],
+            [ 'type identifier PARENTHESES_OPEN declarationArgs PARENTHESES_CLOSED', 'console.log("defFunction args");' ]
+        ],
+        expression: [
+            [ 'identifier', operation ],
+            [ 'literal', operation ],
+            [ 'expression operator expression', operation ],
+            [ 'PARENTHESES_OPEN expression PARENTHESES_CLOSED', operation ]
+        ],
+        declarationSequen: [
+            [ 'COMMA identifier declarationSequen', 'console.log("declarationVar Sequence 1");' ],
+            [ 'COMMA identifier ATTRIBUTION literal declarationSequen', 'console.log("declarationVar Sequence 2");' ],
+            [ 'SEMICOLON', 'console.log("declarationVar Sequence 3");' ]
+        ],
+        declarationVar: [
+            [ 'type identifier declarationSequen', 'console.log("declarationVar 1");' ],
+            [ 'type identifier ATTRIBUTION literal declarationSequen', 'console.log("declarationVar 2");' ]
+        ],
+        defIf: [
+            [ 'IF PARENTHESES_OPEN expression PARENTHESES_CLOSED block', 'console.log("defIf");' ]
+        ],
+        declarationArgs: [
+            [ 'type identifier', 'console.log("declarationArgs final");' ],
+            [ 'type identifier COMMA declarationArgs', 'console.log("declarationArgs inter");' ]
+        ],
+        functionCallerArgs: [
+            [ 'identifier', 'console.log("functionCallerArgs 1");' ],
+            [ 'literal', 'console.log("functionCallerArgs 2");' ],
+            [ 'functionCallerArgs COMMA functionCallerArgs', 'console.log("functionCallerArgs 3");' ],
+        ],
+        functionCaller: [
+            [ 'identifier PARENTHESES_OPEN PARENTHESES_CLOSED', 'console.log("functionCaller 1");' ],
+            [ 'identifier PARENTHESES_OPEN functionCallerArgs PARENTHESES_CLOSED', 'console.log("functionCaller 2");' ],
+        ],
+        blockArgs: [
+            [ 'declarationVar blockArgs', 'console.log("blockArgs 1");' ],
+            [ 'defIf blockArgs', 'console.log("blockArgs 2");' ],
+            [ 'expression SEMICOLON blockArgs', 'console.log("blockArgs 3");' ],
+            [ 'functionCaller SEMICOLON blockArgs', 'console.log("blockArgs 4");' ],
+            [ 'defReturn', 'console.log("blockArgs 5");' ],
+            [ '', 'console.log("blockArgs 6");' ]
+        ],
+        block: [
+            [ 'KEYS_OPEN KEYS_CLOSED', 'console.log("Block empry");' ],
+            [ 'KEYS_OPEN blockArgs KEYS_CLOSED', 'console.log("Block empry");' ] //Terminar
+        ],
+        syntatic: [
+            [ 'includeLib syntatic', 'console.log("Valid!");' ],
+            [ 'defFunction block', 'console.log("Valid!");' ]
+        ],
+        identifier: [
+            [ 'IDENTIFIER', operation ]
         ],
         type: [
             [ 'INT', operation ],
@@ -136,6 +182,12 @@ let grammar = {
             [ 'SUBTRACTION', operation ],
             [ 'MULTIPLICATION', operation ],
             [ 'DIVISION', operation ],
+            [ 'LT', operation ],
+            [ 'GT', operation ],
+            [ 'LE', operation ],
+            [ 'GE', operation ],
+            [ 'EQ', operation ],
+            [ 'NE', operation ],
             [ 'MOD', operation ]
         ],
         keyword: [
@@ -160,8 +212,8 @@ let grammar = {
             [ 'CHARACTER', operation ],
             [ 'STRING', operation ]
         ],
-        identifier: [
-            [ 'IDENTIFIER', operation ]
+        defReturn: [
+            [ 'RETURN expression SEMICOLON', 'console.log("defReturn 1");' ]
         ]
     }
 }
@@ -170,4 +222,4 @@ let parser = Parser(grammar);
 
 let parserSource = parser.generate();
 
-parser.parse('int main() { int _4 = 4; printf("%d%#$%éá\n()[]{}+-*/.;,<>=", _4); return 0; }');
+parser.parse('#include <stdio.h> #include <stdlib.h> int main() { int variavelA = 15; int variavelB = 20; int resultado; resultado = variavelB / variavelA; if (resultado > 1.0) { printf("O Resultado eh maior que 1.0!\n"); } printf("O Resultado eh %.f\n", resultado); return 0; }');

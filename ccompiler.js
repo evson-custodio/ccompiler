@@ -83,129 +83,157 @@ let grammar = {
         start: [
             [ 'syntatic EOF', 'return $1'],
         ],
+        // Análise de inclusão de biblioteca
         includeLib: [
-            [ 'INCLUDE LT identifier POINT identifier GT', 'console.log("Include Lib 1");' ]
+            [ 'INCLUDE LT identifier POINT identifier GT', 'console.log("Include Library 1");' ]
         ],
+        // Análise de define
         defineExp: [
-            [ 'DEFINE identifier literal', 'console.log("defineExp 1");' ]
+            [ 'DEFINE identifier literal', 'console.log("Define Expression 1");' ]
         ],
+        // Definição de função
         defFunction: [
-            [ 'type identifier PARENTHESES_OPEN PARENTHESES_CLOSED', 'console.log("defFunction empry");' ],
-            [ 'type identifier PARENTHESES_OPEN declarationArgs PARENTHESES_CLOSED', 'console.log("defFunction args");' ]
+            [ 'type identifier PARENTHESES_OPEN PARENTHESES_CLOSED', 'console.log("Empty Function Definition");' ],
+            [ 'type identifier PARENTHESES_OPEN declarationArgs PARENTHESES_CLOSED', 'console.log("Function Arguments Definition");' ]
         ],
+        // Definição de expressão
         expression: [
             [ 'identifier', operation ],
             [ 'literal', operation ],
             [ 'expression operator expression', operation ],
             [ 'PARENTHESES_OPEN expression PARENTHESES_CLOSED', operation ]
         ],
+        // Sequencia de declaração
         declarationSequen: [
-            [ 'COMMA identifier declarationSequen', 'console.log("declarationVar Sequence 1");' ],
-            [ 'COMMA identifier ATTRIBUTION expression declarationSequen', 'console.log("declarationVar Sequence 2");' ],
-            [ 'SEMICOLON', 'console.log("declarationVar Sequence 3");' ]
+            [ 'COMMA identifier declarationSequen', 'console.log("Variable Sequence Declaration 1");' ],
+            [ 'COMMA identifier ATTRIBUTION expression declarationSequen', 'console.log("Variable Sequence Declaration 2");' ],
+            [ 'SEMICOLON', 'console.log("Variable Sequence Declaration 3");' ]
         ],
+        // Declaração de variaveis
         declarationVar: [
-            [ 'type identifier declarationSequen', 'console.log("declarationVar 1");' ],
-            [ 'type identifier ATTRIBUTION expression declarationSequen', 'console.log("declarationVar 2");' ]
+            [ 'type identifier declarationSequen', 'console.log("Variable Declaration 1");' ],
+            [ 'type identifier ATTRIBUTION expression declarationSequen', 'console.log("Variable Declaration 2");' ]
         ],
+        // Definição do IF
         defIf: [
-            [ 'IF PARENTHESES_OPEN expression PARENTHESES_CLOSED block defElse', 'console.log("defIf");' ]
+            [ 'IF PARENTHESES_OPEN expression PARENTHESES_CLOSED block defElse', 'console.log("IF Definition");' ]
         ],
+        // Definição do ELSE
         defElse: [
-            [ '', 'console.log("defElse 1");' ],
-            [ 'ELSE block', 'console.log("defElse 2");' ],
-            [ 'ELSE defIf', 'console.log("defElse 3");' ]
+            [ '', 'console.log("Else Definition 1");' ],
+            [ 'ELSE block', 'console.log("Else Definition 2");' ],
+            [ 'ELSE defIf', 'console.log("Else Definition 3");' ]
         ],
+        // Definição do DO (while)
         defDo: [
-            [ 'DO block WHILE PARENTHESES_OPEN expression PARENTHESES_CLOSED SEMICOLON', 'console.log("defDo");' ]
+            [ 'DO block WHILE PARENTHESES_OPEN expression PARENTHESES_CLOSED SEMICOLON', 'console.log("Do (while) Definition");' ]
         ],
+        // Definição do WHILE
         defWhile: [
-            [ 'WHILE PARENTHESES_OPEN expression PARENTHESES_CLOSED block', 'console.log("defWhile");' ]
+            [ 'WHILE PARENTHESES_OPEN expression PARENTHESES_CLOSED block', 'console.log("While Definition");' ]
         ],
+        // Segunda parte do FOR
         expressionFor: [
-            [ 'expression', 'console.log("expressionFor 1");' ],
-            [ 'expression COMMA expressionFor', 'console.log("expressionFor 2");' ]
+            [ 'expression', 'console.log("FOR Expression 1");' ],
+            [ 'expression COMMA expressionFor', 'console.log("FOR Expression 2");' ]
         ],
+        // Primeira parte do FOR
         initialFor: [
-            [ '', 'console.log("initialFor 1");' ],
-            [ 'declarationVar', 'console.log("initialFor 2");' ],
-            [ 'expressionFor', 'console.log("initialFor 3");' ]
+            [ '', 'console.log("FOR Initialization 1");' ],
+            [ 'declarationVar', 'console.log("FOR Initialization 2");' ],
+            [ 'expressionFor', 'console.log("FOR Initialization 3");' ]
         ],
+        // Expressão Unária
         expressionUnary: [
-            [ 'identifier unary', 'console.log("expressionUnary 1");' ]
+            [ 'identifier unary', 'console.log("Unary Expression 1");' ]
         ],
+        // Terceira parte do FOR
         iterateFor: [
-            [ '', 'console.log("iterateFor 1");' ],
-            [ 'expressionFor', 'console.log("iterateFor 2");' ],
-            [ 'expressionUnary', 'console.log("iterateFor 3");' ]
+            [ '', 'console.log("FOR Iteration 1");' ],
+            [ 'expressionFor', 'console.log("FOR Iteration 2");' ],
+            [ 'expressionUnary', 'console.log("FOR Iteration 3");' ]
         ],
+        // Definição do FOR
         defFor: [
-            [ 'FOR PARENTHESES_OPEN initialFor SEMICOLON expression SEMICOLON iterateFor PARENTHESES_CLOSED block', 'console.log("defFor 1");' ]
+            [ 'FOR PARENTHESES_OPEN initialFor SEMICOLON expression SEMICOLON iterateFor PARENTHESES_CLOSED block', 'console.log("FOR Definition 1");' ]
         ],
+        // Bloco que pode estar dentro do CASE
         caseBlock: [
-            [ 'block caseBlock', 'console.log("caseBlock 1");' ],
-            [ 'defineExp caseBlock', 'console.log("caseBlock 2");' ],
-            [ 'declarationVar caseBlock', 'console.log("caseBlock 3");' ],
-            [ 'defIf caseBlock', 'console.log("caseBlock 4");' ],
-            [ 'defWhile caseBlock', 'console.log("caseBlock 5");' ],
-            [ 'defDo caseBlock', 'console.log("caseBlock 6");' ],
-            [ 'defFor caseBlock', 'console.log("caseBlock 7");' ],
-            [ 'defSwitch caseBlock', 'console.log("caseBlock 8");' ],
-            [ 'expression SEMICOLON caseBlock', 'console.log("caseBlock 9");' ],
-            [ 'functionCaller SEMICOLON caseBlock', 'console.log("caseBlock 10");' ],
-            [ 'expressionUnary SEMICOLON caseBlock', 'console.log("caseBlock 11");' ],
-            [ 'defReturn', 'console.log("caseBlock 12");' ],
-            [ '', 'console.log("caseBlock 13");' ]
+            [ 'block caseBlock', 'console.log("Case Block 1");' ],
+            [ 'defineExp caseBlock', 'console.log("Case Block 2");' ],
+            [ 'declarationVar caseBlock', 'console.log("Case Block 3");' ],
+            [ 'defIf caseBlock', 'console.log("Case Block 4");' ],
+            [ 'defWhile caseBlock', 'console.log("Case Block 5");' ],
+            [ 'defDo caseBlock', 'console.log("Case Block 6");' ],
+            [ 'defFor caseBlock', 'console.log("Case Block 7");' ],
+            [ 'defSwitch caseBlock', 'console.log("Case Block 8");' ],
+            [ 'expression SEMICOLON caseBlock', 'console.log("Case Block 9");' ],
+            [ 'functionCaller SEMICOLON caseBlock', 'console.log("Case Block 10");' ],
+            [ 'expressionUnary SEMICOLON caseBlock', 'console.log("Case Block 11");' ],
+            [ 'defReturn', 'console.log("Case Block 12");' ],
+            [ '', 'console.log("Case Block 13");' ]
         ],
+        // Chamada dos comandos CASE
         interSwitch: [
-            [ 'CASE expression COLON interSwitch', 'console.log("interSwitch 1");' ],
-            [ 'CASE expression COLON caseBlock BREAK SEMICOLON DEFAULT COLON caseBlock', 'console.log("interSwitch 2");' ],
-            [ 'CASE expression COLON caseBlock BREAK SEMICOLON', 'console.log("interSwitch 3");' ],
+            [ 'CASE expression COLON interSwitch', 'console.log("Inter Switch 1");' ],
+            [ 'CASE expression COLON caseBlock BREAK SEMICOLON DEFAULT COLON caseBlock', 'console.log("Inter Switch 2");' ],
+            [ 'CASE expression COLON caseBlock BREAK SEMICOLON', 'console.log("Inter Switch 3");' ],
         ],
+        // Definição do bloco interno do SWITCH
         switchBlock: [
-            [ 'KEYS_OPEN KEYS_CLOSED', 'console.log("switchBlock 1");' ],
-            [ 'KEYS_OPEN interSwitch KEYS_CLOSED', 'console.log("switchBlock 2");' ]
+            [ 'KEYS_OPEN KEYS_CLOSED', 'console.log("Switch Block 1");' ],
+            [ 'KEYS_OPEN interSwitch KEYS_CLOSED', 'console.log("Switch Block 2");' ]
         ],
+        // Definição do SWITCH
         defSwitch: [
-            [ 'SWITCH PARENTHESES_OPEN expression PARENTHESES_CLOSED switchBlock', 'console.log("defSwitch 1");' ],
+            [ 'SWITCH PARENTHESES_OPEN expression PARENTHESES_CLOSED switchBlock', 'console.log("Switch Definition 1");' ],
         ],
+        // Declaração de função
         declarationArgs: [
-            [ 'type identifier', 'console.log("declarationArgs final");' ],
-            [ 'type identifier COMMA declarationArgs', 'console.log("declarationArgs inter");' ]
+            [ 'type identifier', 'console.log("Final Args Declaration");' ],
+            [ 'type identifier COMMA declarationArgs', 'console.log("Inter Args Declaration");' ]
         ],
+        // Argumentos da função
         functionCallerArgs: [
-            [ 'identifier', 'console.log("functionCallerArgs 1");' ],
-            [ 'literal', 'console.log("functionCallerArgs 2");' ],
-            [ 'functionCallerArgs COMMA functionCallerArgs', 'console.log("functionCallerArgs 3");' ],
+            [ 'identifier', 'console.log("Function Caller Arguments 1");' ],
+            [ 'literal', 'console.log("Function Caller Arguments 2");' ],
+            [ 'functionCallerArgs COMMA functionCallerArgs', 'console.log("Function Caller Arguments 3");' ],
         ],
+        // Chamada de função
         functionCaller: [
-            [ 'identifier PARENTHESES_OPEN PARENTHESES_CLOSED', 'console.log("functionCaller 1");' ],
-            [ 'identifier PARENTHESES_OPEN functionCallerArgs PARENTHESES_CLOSED', 'console.log("functionCaller 2");' ],
+            [ 'identifier PARENTHESES_OPEN PARENTHESES_CLOSED', 'console.log("Function Caller 1");' ],
+            [ 'identifier PARENTHESES_OPEN functionCallerArgs PARENTHESES_CLOSED', 'console.log("Function Caller 2");' ],
         ],
+        // Argumentos do bloco geral
         blockArgs: [
-            [ 'block blockArgs', 'console.log("blockArgs 1");' ],
-            [ 'defineExp blockArgs', 'console.log("blockArgs 2");' ],
-            [ 'declarationVar blockArgs', 'console.log("blockArgs 3");' ],
-            [ 'defIf blockArgs', 'console.log("blockArgs 4");' ],
-            [ 'defWhile blockArgs', 'console.log("blockArgs 5");' ],
-            [ 'defDo blockArgs', 'console.log("blockArgs 6");' ],
-            [ 'defFor blockArgs', 'console.log("blockArgs 7");' ],
-            [ 'defSwitch blockArgs', 'console.log("blockArgs 8");' ],
-            [ 'expression SEMICOLON blockArgs', 'console.log("blockArgs 9");' ],
-            [ 'functionCaller SEMICOLON blockArgs', 'console.log("blockArgs 10");' ],
-            [ 'expressionUnary SEMICOLON blockArgs', 'console.log("blockArgs 11");' ],
-            [ 'defReturn', 'console.log("blockArgs 12");' ],
-            [ '', 'console.log("blockArgs 13");' ]
+            [ 'block blockArgs', 'console.log("Arguments Block 1");' ],
+            [ 'defineExp blockArgs', 'console.log("Arguments Block 2");' ],
+            [ 'declarationVar blockArgs', 'console.log("Arguments Block 3");' ],
+            [ 'defIf blockArgs', 'console.log("Arguments Block 4");' ],
+            [ 'defWhile blockArgs', 'console.log("Arguments Block 5");' ],
+            [ 'defDo blockArgs', 'console.log("Arguments Block 6");' ],
+            [ 'defFor blockArgs', 'console.log("Arguments Block 7");' ],
+            [ 'defSwitch blockArgs', 'console.log("Arguments Block 8");' ],
+            [ 'expression SEMICOLON blockArgs', 'console.log("Arguments Block 9");' ],
+            [ 'functionCaller SEMICOLON blockArgs', 'console.log("Arguments Block 10");' ],
+            [ 'expressionUnary SEMICOLON blockArgs', 'console.log("Arguments Block 11");' ],
+            [ 'defReturn', 'console.log("Arguments Block 12");' ],
+            [ '', 'console.log("Arguments Block 13");' ]
         ],
+        // Definição do bloco padrão
         block: [
-            [ 'KEYS_OPEN KEYS_CLOSED', 'console.log("Block empry");' ],
-            [ 'KEYS_OPEN blockArgs KEYS_CLOSED', 'console.log("Block empry");' ] //Terminar
+            [ 'KEYS_OPEN KEYS_CLOSED', 'console.log("Empty Block");' ],
+            [ 'KEYS_OPEN blockArgs KEYS_CLOSED', 'console.log("Empty Block");' ] //Terminar
         ],
+        // Inicia a chamada da análise sintática
         syntatic: [
-            [ 'includeLib syntatic', 'console.log("Valid!");' ],
-            [ 'defineExp syntatic', 'console.log("Valid!");' ],
-            [ 'defFunction block', 'console.log("Valid!");' ]
+            [ 'includeLib syntatic', 'console.log("Valid Code!");' ],
+            [ 'defineExp syntatic', 'console.log("Valid Code!");' ],
+            [ 'defFunction block', 'console.log("Valid Code!");' ]
         ],
+        //
+        // Daqui para baixo é a identificação dos operadores
+        //
         identifier: [
             [ 'IDENTIFIER', operation ]
         ],
@@ -223,8 +251,6 @@ let grammar = {
             [ 'POINT', operation ]
         ],
         circulators: [
-            // [ 'QUOTE', operation ],
-            // [ 'DOUBLE_QUOTE', operation ],
             [ 'PARENTHESES_OPEN', operation ],
             [ 'PARENTHESES_CLOSED', operation ],
             [ 'BRACKETS_OPEN', operation ],
@@ -232,23 +258,11 @@ let grammar = {
             [ 'KEYS_OPEN', operation ],
             [ 'KEYS_CLOSED', operation ]
         ],
-        // quantitative: [
-        //     [ 'LT', operation ],
-        //     [ 'GT', operation ],
-        //     [ 'LE', operation ],
-        //     [ 'GE', operation ],
-        //     [ 'EQ', operation ],
-        //     [ 'NE', operation ]
-        // ],
         unary: [
             [ 'NOT', operation ],
             [ 'INCREASE', operation ],
             [ 'DECREASE', operation ]
         ],
-        // binary: [
-        //     [ 'AND', operation ],
-        //     [ 'OR', operation ]
-        // ],
         operator: [
             [ 'ATTRIBUTION', operation ],
             [ 'SUM', operation ],
